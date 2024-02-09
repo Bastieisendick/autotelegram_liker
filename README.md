@@ -9,7 +9,7 @@ Any occuring errors combined with additional information (screenshots, etc.) wil
 2. Make sure Python is installed and ready<br/>
 3. Install Firefox and download a suitable Geckodriver<br/>
 4. Install missing dependencies:<br/>
-    - pyTelegramBotApi (telebot)<br/>
+    - pyTelegramBotAPI (telebot)<br/>
     - selenium<br/>
 5. Change neccessary code parts to your own values. See Neccessary Changes<br/>
 6. Run python main.py<br/>
