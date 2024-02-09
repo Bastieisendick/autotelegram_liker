@@ -12,11 +12,11 @@ from sleepRandomTime import randSeconds
 
 formatted_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S")
 
-print("**************************************")
-print("*                                    *")
-print("* Auto Telegram Liker is running.... *")
-print("*                                    *")
-print("**************************************")
+print("*************************************")
+print("*                                   *")
+print("* Auto Telegram Liker is running... *")
+print("*                                   *")
+print("*************************************")
 
 print(f"Start Time: {formatted_time}")
 
