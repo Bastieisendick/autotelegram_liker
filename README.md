@@ -11,14 +11,14 @@ Any occuring errors combined with additional information (screenshots, etc.) wil
 4. Install missing dependencies:<br/>
     - pyTelegramBotAPI (telebot)<br/>
     - selenium<br/>
-5. Change neccessary code parts to your own values. See Neccessary Changes<br/>
+5. Change neccessary code parts to your own values. See Necessary Changes<br/>
 6. Run python main.py<br/>
 7. This program is best run by my other project "script-restarter", also available on Github<br/>
 
 **Attention: This program requires at least _5 MB_ of space on your hard disk (Including status screenshots, may vary in the future...)**
 
 
-## Neccessary Changes
+## Necessary Changes
 In the messageLiker.py file you will have to adapt some values to your own needs:<br/><br/>
 **chatIdTG**: This is the Id of your Telegram Chat, in which the built in Telegram Bot will inform you over occuring errors. *Example value*: "-1234567890"<br/><br/>
 **botTokenTG**: This is the Telegram Bot Token, obtainable via Telegram BotFather. *Example value*: "3938944536986873498389:awiudhawiudhoiehfe-wdawdw"<br/><br/>
