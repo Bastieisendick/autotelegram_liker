@@ -1,12 +1,10 @@
 import time
 import telebot
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.service import Service
+import undetected_chromedriver as uc
 
 
 from sleepRandomTime import sleepRand
@@ -15,11 +13,15 @@ from sleepRandomTime import sleepRand
 
 chatIdTG = "ENTER YOUR TELEGRAM CHAT ID HERE"
 botTokenTG = """ENTER YOUR TELEGRAM BOT API TOKEN HERE"""
-firefoxProfilePath = "ENTER YOUR FIREFOX PROFILE PATH HERE"
+browserProfileName = "ENTER YOUR BROWSER PROFILE NAME HERE"
+browserProfilePath = "ENTER YOUR BROWSER PROFILE PATH HERE"
+browserLanguage = "ENTER YOUR BROWSER LANGUAGE HERE"
+browserUserAgent = "ENTER YOUR BROWSER USER AGENT HERE"
+driverExecutablePath = "driver/chromedriver"
+
 chatURLTG = "ENTER YOUR TELEGRAM WEB CHAT URL HERE"
 emojiDataDocId = "ENTER YOUR REACTION EMOJI ID HERE"
 whiteListedText = "ENTER YOUR WHITELISTED TEXT HERE"
-geckoDriverPath = "ENTER YOUR GECKODRIVER PATH HERE"
 
 
 
@@ -30,13 +32,15 @@ def work(workTime):
     bot = telebot.TeleBot(botTokenTG)
     endTime = time.time() + workTime
 
+    browserPointer = [None,]
     while time.time() < endTime:
 
         try:
-            procedure(endTime)
+            procedure(browserPointer, endTime)
+            closeBrowser(browserPointer)
 
         except Exception as e:
-
+            closeBrowser(browserPointer)
             try:
                 bot.send_message(chatIdTG, "Error in work loop\n\n" + str(e))
                 print("Error in work loop\n\n" + str(e))
@@ -57,46 +61,60 @@ def work(workTime):
 
             sleepRand(187.372, 230.184)
 
+        closeBrowser(browserPointer)
 
 
 
+def closeBrowser(browserPointer):
+    try:
+        browserPointer[0].quit()            #the browserPointer was added to being able to quit the browser in the procedure loop, as all errors are caught here 
+    except:
+        pass
+    browserPointer[0] = None
 
-def procedure(endTime):
 
-    firefoxOptions = Options()
-    firefoxOptions.set_preference("general.useragent.override", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Safari/605.1.15")
+def procedure(browserPointer, endTime):
 
-    firefoxOptions.set_preference("intl.accept_languages", "de")
-    firefoxOptions.add_argument("-profile")
-    firefoxOptions.add_argument(firefoxProfilePath)
-    firefoxOptions.add_argument("--window-size=500,800")
+    options = uc.ChromeOptions()
+    options.add_argument('--user-agent="' + browserUserAgent + '"')
 
-    driverService = Service(geckoDriverPath)
+    prefs = {
+        "intl.accept_languages": browserLanguage,           #Also change the language in the settings of your used Chrome profile
+        "intl.selected_languages": browserLanguage
+    }
 
-    with webdriver.Firefox(service = driverService, options=firefoxOptions) as browser:
+    options.add_experimental_option("prefs", prefs)
 
-        browser.set_window_size(820,1180)
+    options.add_argument("--user-data-dir=" + browserProfilePath)
+    options.add_argument("--profile-directory=" + browserProfileName)
 
-        login(browser)
-        saveStatus(browser, "Logged in...")
+    browserPointer[0] = uc.Chrome(options=options, driver_executable_path=driverExecutablePath)
+    browser = browserPointer[0]
 
-        scrollUp(browser)
-        saveStatus(browser, "Scrolled up...")
+    sleepRand(10.365, 12.426)
 
-        while time.time() < endTime:
+    browser.set_window_size(820,1180)
 
-            messageElements = getMessages(browser)
+    login(browser)
+    saveStatus(browser, "Logged in...")
 
-            unlikedMessages = getUnlikedMessages(browser, messageElements)
+    scrollUp(browser)
+    saveStatus(browser, "Scrolled up...")
 
-            if(len(unlikedMessages) > 0):
-                likeMessage(browser, unlikedMessages[0])
-                saveStatus(browser, "Liked Message...")
+    while time.time() < endTime:
 
-            else:
-                browser.execute_script("arguments[0].scrollIntoView(true);", messageElements[-1])
+        messageElements = getMessages(browser)
 
-            sleepRand(22.526, 44.184)
+        unlikedMessages = getUnlikedMessages(browser, messageElements)
+
+        if(len(unlikedMessages) > 0):
+            likeMessage(browser, unlikedMessages[0])
+            saveStatus(browser, "Liked Message...")
+
+        else:
+            browser.execute_script("arguments[0].scrollIntoView(true);", messageElements[-1])
+
+        sleepRand(22.526, 44.184)
 
 
 
