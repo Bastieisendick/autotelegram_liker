@@ -1,5 +1,5 @@
 # Auto Telegram Liker
-This program is a Python Selenium based automation bot<br/>using [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver).<br/>
+This program is a Python Selenium based automation bot using [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver).<br/>
 It reacts to all sent messages in a Telegram Group with a specified emoji reply.<br/>
 Any occuring errors combined with additional information (screenshots, etc.) will be sent to you via a Telegram Bot.<br/>
 
